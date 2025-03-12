@@ -8,6 +8,7 @@ import com.example.walmartcodingtest.domain.models.Result
 import com.example.walmartcodingtest.domain.usecases.GetCountries
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class CountriesViewModel(
     private val getCountries: GetCountries
@@ -34,11 +35,12 @@ class CountriesViewModel(
     fun getCountriesList() {
         _isLoading.value = true
         viewModelScope.launch(Dispatchers.IO) {
-            getCountries().let { result ->
-                _isLoading.postValue(false)
+            val result = getCountries()
+            withContext(Dispatchers.Main){
+                _isLoading.value = false
                 when (result) {
-                    is Result.Success -> _countriesState.postValue(result.data)
-                    is Result.Error -> _errorState.postValue(result.exception)
+                    is Result.Success -> _countriesState.value = result.data
+                    is Result.Error -> _errorState.value = result.exception
                 }
             }
         }
