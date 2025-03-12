@@ -17,8 +17,8 @@ class CountriesViewModel(
     val countriesState get() = _countriesState
 
     // fetches a single country from the countries state
-    private val _selectedCountryState = MutableLiveData<List<Country>>()
-    val selectedCountryState get() = _selectedCountryState
+    private val _filteredCountriesState = MutableLiveData<List<Country>>()
+    val filteredCountriesState get() = _filteredCountriesState
 
     // shows loading spinner
     private val _isLoading = MutableLiveData(false)
@@ -51,7 +51,7 @@ class CountriesViewModel(
                     _countriesState.value?.filter {
                         it.name.lowercase().startsWith(name.lowercase())
                     }?.let { country ->
-                        _selectedCountryState.postValue(country)
+                        _filteredCountriesState.postValue(country)
                     }
                 }
             }

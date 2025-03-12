@@ -3,7 +3,6 @@ package com.example.walmartcodingtest.presentation
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.widget.SearchView
@@ -37,7 +36,7 @@ class MainActivity : AppCompatActivity() {
             countriesState.observe(this@MainActivity) { countries ->
                 countryAdapter.setData(countries)
             }
-            selectedCountryState.observe(this@MainActivity) { country ->
+            filteredCountriesState.observe(this@MainActivity) { country ->
                 countryAdapter.setData(country)
             }
             isLoading.observe(this@MainActivity) { isLoading ->
