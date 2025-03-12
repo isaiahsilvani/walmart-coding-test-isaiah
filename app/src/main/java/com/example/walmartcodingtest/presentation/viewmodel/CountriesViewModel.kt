@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.walmartcodingtest.domain.models.Country
+import com.example.walmartcodingtest.domain.models.Result
 import com.example.walmartcodingtest.domain.usecases.GetCountries
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -27,9 +28,11 @@ class CountriesViewModel(
     fun getCountriesList() {
         _isLoading.value = true
         viewModelScope.launch(Dispatchers.IO) {
-            getCountries()?.let { countries ->
+            getCountries().let { result ->
                 _isLoading.postValue(false)
-                _countriesState.postValue(countries)
+                if (result is Result.Success) {
+                    _countriesState.postValue(result.data)
+                }
             }
         }
     }
