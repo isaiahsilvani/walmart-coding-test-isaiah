@@ -3,10 +3,12 @@ package com.example.walmartcodingtest.presentation
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -38,11 +40,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initObservers() {
-        viewModel.countriesState.observe(this) { countries ->
-            countryAdapter.setData(countries)
-        }
-        viewModel.selectedCountryState.observe(this) { country ->
-            countryAdapter.setData(country)
+        with (viewModel) {
+            countriesState.observe(this@MainActivity) { countries ->
+                countryAdapter.setData(countries)
+            }
+            selectedCountryState.observe(this@MainActivity) { country ->
+                countryAdapter.setData(country)
+            }
+            isLoading.observe(this@MainActivity) { isLoading ->
+                binding.loadingSpinner.isVisible = isLoading
+            }
         }
     }
 

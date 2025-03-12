@@ -18,12 +18,17 @@ class CountriesViewModel(
     private val _selectedCountryState = MutableLiveData<List<Country>>()
     val selectedCountryState get() = _selectedCountryState
 
+    private val _isLoading = MutableLiveData(false)
+    val isLoading get() = _isLoading
+
     /**
      * Method to fetch the countries from the API and post response to LiveData
      */
     fun getCountriesList() {
+        _isLoading.value = true
         viewModelScope.launch(Dispatchers.IO) {
             getCountries()?.let { countries ->
+                _isLoading.postValue(false)
                 _countriesState.postValue(countries)
             }
         }
