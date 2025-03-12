@@ -1,5 +1,6 @@
 package com.example.walmartcodingtest.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -28,6 +29,10 @@ class CountriesViewModel(
     // shows error message
     private val _errorState = MutableLiveData<Exception>()
     val errorState get() = _errorState
+
+    init {
+        getCountriesList()
+    }
 
     /**
      * Method to fetch the countries from the API and post response to LiveData

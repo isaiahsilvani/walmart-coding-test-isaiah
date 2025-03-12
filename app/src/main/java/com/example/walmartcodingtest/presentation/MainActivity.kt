@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -18,9 +19,12 @@ import com.example.walmartcodingtest.presentation.viewmodel.CountriesViewModel
 import com.example.walmartcodingtest.presentation.viewmodel.CountriesViewModelFactory
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var viewModel: CountriesViewModel
     private lateinit var binding: ActivityMainBinding
     private lateinit var countryAdapter: CountryAdapter
+
+    private val viewModel: CountriesViewModel by viewModels {
+        CountriesViewModelFactory()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +32,6 @@ class MainActivity : AppCompatActivity() {
         initViews()
         initRecyclerView()
         initObservers()
-        viewModel.getCountriesList()
     }
 
     private fun initObservers() {
@@ -85,7 +88,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun initActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
-        viewModel = CountriesViewModelFactory().create(CountriesViewModel::class.java)
         enableEdgeToEdge()
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
