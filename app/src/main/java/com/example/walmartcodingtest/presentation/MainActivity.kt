@@ -35,9 +35,11 @@ class MainActivity : AppCompatActivity() {
         with (viewModel) {
             countriesState.observe(this@MainActivity) { countries ->
                 countryAdapter.setData(countries)
+                binding.tvEmptyCountriesList.isVisible = countries.isEmpty()
             }
-            filteredCountriesState.observe(this@MainActivity) { country ->
-                countryAdapter.setData(country)
+            filteredCountriesState.observe(this@MainActivity) { countries ->
+                countryAdapter.setData(countries)
+                binding.tvEmptyCountriesList.isVisible = countries.isEmpty()
             }
             isLoading.observe(this@MainActivity) { isLoading ->
                 binding.loadingSpinner.isVisible = isLoading
