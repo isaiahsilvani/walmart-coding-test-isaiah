@@ -10,6 +10,9 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,6 +20,7 @@ import com.example.walmartcodingtest.R
 import com.example.walmartcodingtest.databinding.ActivityMainBinding
 import com.example.walmartcodingtest.presentation.viewmodel.CountriesViewModel
 import com.example.walmartcodingtest.presentation.viewmodel.CountriesViewModelFactory
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -36,19 +40,24 @@ class MainActivity : AppCompatActivity() {
 
     private fun initObservers() {
         with (viewModel) {
-            countriesState.observe(this@MainActivity) { countries ->
+            val context = this@MainActivity
+            countriesState.observe(context) { countries ->
                 countryAdapter.setData(countries)
                 binding.tvEmptyCountriesList.isVisible = countries.isEmpty()
             }
-            filteredCountriesState.observe(this@MainActivity) { countries ->
+            filteredCountriesState.observe(context) { countries ->
                 countryAdapter.setData(countries)
                 binding.tvEmptyCountriesList.isVisible = countries.isEmpty()
             }
-            isLoading.observe(this@MainActivity) { isLoading ->
+            isLoading.observe(context) { isLoading ->
                 binding.loadingSpinner.isVisible = isLoading
             }
-            errorState.observe(this@MainActivity) { error ->
-                Toast.makeText(this@MainActivity.baseContext, error.message, Toast.LENGTH_LONG).show()
+            lifecycleScope.launch {
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    errorState.collect { error ->
+                        Toast.makeText(context, error.message, Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
     }

@@ -8,6 +8,8 @@ import com.example.walmartcodingtest.domain.models.Country
 import com.example.walmartcodingtest.domain.models.Result
 import com.example.walmartcodingtest.domain.usecases.GetCountries
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -27,8 +29,8 @@ class CountriesViewModel(
     val isLoading get() = _isLoading
 
     // shows error message
-    private val _errorState = MutableLiveData<Exception>()
-    val errorState get() = _errorState
+    private val _errorState = MutableSharedFlow<Exception>()
+    val errorState: SharedFlow<Exception> = _errorState
 
     init {
         getCountriesList()
@@ -37,7 +39,7 @@ class CountriesViewModel(
     /**
      * Method to fetch the countries from the API and post response to LiveData
      */
-    fun getCountriesList() {
+    private fun getCountriesList() {
         _isLoading.value = true
         viewModelScope.launch(Dispatchers.IO) {
             val result = getCountries()
@@ -45,7 +47,7 @@ class CountriesViewModel(
                 _isLoading.value = false
                 when (result) {
                     is Result.Success -> _countriesState.value = result.data
-                    is Result.Error -> _errorState.value = result.exception
+                    is Result.Error -> _errorState.emit(result.exception)
                 }
             }
         }
