@@ -4,48 +4,27 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="10dp"
+    android:padding="13dp"
     android:layout_margin="10dp"
     android:background="#DDF0F3">
 
     <TextView
-        android:id="@+id/tvCountryName"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="hello helle"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="10dp"/>
-
-    <TextView
-        android:id="@+id/tvRegion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="REGION"
-        app:layout_constraintTop_toBottomOf="@id/tvCountryName"
-        android:textSize="16sp"
+        android:id="@+id/tvCountryNameRegionCapital"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        />
-
-    <TextView
-        android:id="@+id/tvCapital"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="CAPITAL"
-        android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@id/tvCountryName"
-        app:layout_constraintStart_toEndOf="@id/tvRegion"
-        app:layout_constraintEnd_toStartOf="@id/tvCode"/>
+        android:text="@string/country_name_region_and_capital"/>
 
     <TextView
-        android:id="@+id/tvCode"
+        android:id="@+id/tvCountryCode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="CODE"
-        android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@id/tvCountryName"
-        tools:layout_editor_absoluteX="66dp"
+        android:textStyle="bold"
+        android:textSize="14sp"
+
+        app:layout_constraintTop_toTopOf="@id/tvCountryNameRegionCapital"
         app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

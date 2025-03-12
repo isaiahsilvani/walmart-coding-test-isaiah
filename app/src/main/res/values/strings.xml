@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Walmart Coding Test</string>
     <string name="list_of_countries">List of Countries</string>
+    <string name="country_name_region_and_capital">%1$s, %2$s \n\n %3$s</string>
 </resources>

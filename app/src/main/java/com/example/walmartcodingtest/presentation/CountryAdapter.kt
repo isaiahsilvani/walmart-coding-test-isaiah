@@ -13,10 +13,8 @@ class CountryAdapter : RecyclerView.Adapter<CountryAdapter.CountryViewHolder>() 
     private val data = mutableListOf<Country>()
 
     inner class CountryViewHolder(countryView: View) :RecyclerView.ViewHolder(countryView) {
-        var name: TextView = countryView.findViewById(R.id.tvCountryName)
-        var region: TextView = countryView.findViewById(R.id.tvRegion)
-        var capital: TextView = countryView.findViewById(R.id.tvCapital)
-        var code: TextView = countryView.findViewById(R.id.tvCode)
+        val countryNameRegionAndCapital: TextView = countryView.findViewById(R.id.tvCountryNameRegionCapital)
+        val code: TextView = countryView.findViewById(R.id.tvCountryCode)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CountryViewHolder {
@@ -27,12 +25,11 @@ class CountryAdapter : RecyclerView.Adapter<CountryAdapter.CountryViewHolder>() 
     override fun getItemCount(): Int = data.size
 
     override fun onBindViewHolder(holder: CountryViewHolder, position: Int) {
-        with (data[position]) {
-            holder.name.text = this.name
-            holder.region.text = this.region
-            holder.capital.text = this.capital
-            holder.code.text = this.code
-        }
+        val country = data[position]
+        val formattedText = "${country.name}, ${country.region}\n\n${country.capital}"
+
+        holder.countryNameRegionAndCapital.text = formattedText
+        holder.code.text = country.code
     }
 
     /**
