@@ -36,12 +36,10 @@ class CountryAdapter : ListAdapter<Country, CountryAdapter.CountryViewHolder>(Co
 
 class CountryDiffCallback : DiffUtil.ItemCallback<Country>() {
     override fun areItemsTheSame(oldItem: Country, newItem: Country): Boolean {
-        // Check if the items are the same (e.g., by a unique ID)
         return oldItem.code == newItem.code
     }
 
     override fun areContentsTheSame(oldItem: Country, newItem: Country): Boolean {
-        // Check if the content of the items is the same
         return oldItem == newItem
     }
 }
