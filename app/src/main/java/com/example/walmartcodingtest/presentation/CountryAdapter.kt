@@ -4,17 +4,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.walmartcodingtest.R
 import com.example.walmartcodingtest.domain.models.Country
 
-class CountryAdapter : RecyclerView.Adapter<CountryAdapter.CountryViewHolder>() {
+class CountryAdapter : ListAdapter<Country, CountryAdapter.CountryViewHolder>(CountryDiffCallback()) {
 
-    private val data = mutableListOf<Country>()
-
-    inner class CountryViewHolder(countryView: View) :RecyclerView.ViewHolder(countryView) {
+    inner class CountryViewHolder(countryView: View) : RecyclerView.ViewHolder(countryView) {
         val countryNameRegionAndCapital: TextView = countryView.findViewById(R.id.tvCountryNameRegionCapital)
         val code: TextView = countryView.findViewById(R.id.tvCountryCode)
+
+        fun bind(country: Country) {
+            val formattedText = "${country.name}, ${country.region}\n\n${country.capital}"
+            countryNameRegionAndCapital.text = formattedText
+            code.text = country.code
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CountryViewHolder {
@@ -22,30 +28,20 @@ class CountryAdapter : RecyclerView.Adapter<CountryAdapter.CountryViewHolder>() 
         return CountryViewHolder(v)
     }
 
-    override fun getItemCount(): Int = data.size
-
     override fun onBindViewHolder(holder: CountryViewHolder, position: Int) {
-        val country = data[position]
-        val formattedText = "${country.name}, ${country.region}\n\n${country.capital}"
+        val currentCountry = getItem(position)
+        holder.bind(currentCountry)
+    }
+}
 
-        holder.countryNameRegionAndCapital.text = formattedText
-        holder.code.text = country.code
+class CountryDiffCallback : DiffUtil.ItemCallback<Country>() {
+    override fun areItemsTheSame(oldItem: Country, newItem: Country): Boolean {
+        // Check if the items are the same (e.g., by a unique ID)
+        return oldItem.code == newItem.code
     }
 
-    /**
-     * Method to set the data and notify the adapter of the change
-     */
-    fun setData(countries: List<Country>?) {
-        // remove data in order to display single country by using the same method
-        if (data.isNotEmpty()) {
-            val oldSize = data.size
-            data.clear()
-            notifyItemRangeRemoved(0, oldSize)
-        }
-        countries?.let {
-            data.addAll(it)
-        }
-        notifyItemRangeChanged(0, data.size)
+    override fun areContentsTheSame(oldItem: Country, newItem: Country): Boolean {
+        // Check if the content of the items is the same
+        return oldItem == newItem
     }
-
 }

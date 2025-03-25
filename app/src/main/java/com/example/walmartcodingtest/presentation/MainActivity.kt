@@ -42,11 +42,11 @@ class MainActivity : AppCompatActivity() {
         with (viewModel) {
             val context = this@MainActivity
             countriesState.observe(context) { countries ->
-                countryAdapter.setData(countries)
+                countryAdapter.submitList(countries)
                 binding.tvEmptyCountriesList.isVisible = countries.isEmpty()
             }
             filteredCountriesState.observe(context) { countries ->
-                countryAdapter.setData(countries)
+                countryAdapter.submitList(countries)
                 binding.tvEmptyCountriesList.isVisible = countries.isEmpty()
             }
             isLoading.observe(context) { isLoading ->
@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity() {
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (query.isNullOrBlank()) {
-                    countryAdapter.setData(viewModel.countriesState.value)
+                    countryAdapter.submitList(viewModel.countriesState.value)
                 } else {
                     viewModel.filterCountriesByName(query)
                 }
@@ -86,7 +86,7 @@ class MainActivity : AppCompatActivity() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (newText.isNullOrBlank()) {
-                    countryAdapter.setData(viewModel.countriesState.value)
+                    countryAdapter.submitList(viewModel.countriesState.value)
                 } else {
                     viewModel.filterCountriesByName(newText)
                 }
